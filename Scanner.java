@@ -153,6 +153,11 @@ public class Scanner {
                         posicion--;
                         lexema = "";
                     }
+                    if(i == source.length()-1){
+                        lexema = "";
+                        Token t = new Token(TipoToken.EOF, lexema);
+                        tokens.add(t);
+                    }
                 break;
                 //--------------------------------------------------------------------------------------------------
                 //                              Tokens de uno o dos caracteres
@@ -304,6 +309,10 @@ public class Scanner {
                         estado = 15;
                         lexema += c;
                     }
+                    else if(c == '+' || c == '-'){
+                        estado = 151;
+                        lexema += c;
+                    }
                     else{
                         if(lexema.contains(".")){
                             lexema = lexema.substring(0, lexema.length() - 1);
@@ -335,9 +344,25 @@ public class Scanner {
                         posicion--;
                     }
                 break;
-                //--------------------------------------------------------------------------------------------------
-                //                                          Manejo de cadenas
-                //--------------------------------------------------------------------------------------------------
+                case 151:
+                    if(Character.isDigit(c)){
+                        estado = 15;
+                        lexema += c;
+                    }
+                    else{
+                        System.out.println("Hola");
+                        lexema = lexema.substring(0, lexema.length() - 2);
+                        Token t = new Token(TipoToken.NUMBER, lexema, Float.parseFloat(lexema));
+                        tokens.add(t);
+                        estado = 0;
+                        lexema = "";
+                        i-=3;
+                        posicion -= 3;
+                    }
+                break;
+    //--------------------------------------------------------------------------------------------------
+    //                                          Manejo de cadenas
+    //--------------------------------------------------------------------------------------------------
                 case 16:
                     if(c == '\n'){
                         do {
