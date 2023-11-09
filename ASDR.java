@@ -255,6 +255,7 @@ public class ASDR implements Parser{
             return;
         
         /*
+        
          * Se verifica si el tipo de preanalisis pertenece al conjunto primero de EXPRESSION, 
          * de lo contrario se tomara como la producción Ɛ.
          * Esto se podria hacer comparando de forma directa dentro del if el tipo de preanalisis 
