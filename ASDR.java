@@ -9,6 +9,7 @@ public class ASDR implements Parser{
     private Token preanalisis;
     private final List<Token> tokens;
     private List<TipoToken> primeroEXPRESSION; //Se declara una lista en la que se incluiran los tokens que forman el conjunto primero de EXPRESSION
+    private List<TipoToken> primeroSTATEMENT;
 
     public ASDR(List<Token> tokens){
         this.tokens = tokens;
@@ -16,6 +17,7 @@ public class ASDR implements Parser{
 
         //Se agregan los elementos del conjunto primero de EXPRESSION
         primeroEXPRESSION.add(TipoToken.BANG);
+        primeroEXPRESSION.add(TipoToken.MINUS);
         primeroEXPRESSION.add(TipoToken.TRUE);
         primeroEXPRESSION.add(TipoToken.FALSE);
         primeroEXPRESSION.add(TipoToken.NULL);
@@ -23,6 +25,23 @@ public class ASDR implements Parser{
         primeroEXPRESSION.add(TipoToken.STRING);
         primeroEXPRESSION.add(TipoToken.IDENTIFIER);
         primeroEXPRESSION.add(TipoToken.LEFT_PAREN);
+
+        //Se agregan los elementos del conjunto primero de STATEMENT
+        primeroSTATEMENT.add(TipoToken.BANG);
+        primeroSTATEMENT.add(TipoToken.MINUS);
+        primeroSTATEMENT.add(TipoToken.TRUE);
+        primeroSTATEMENT.add(TipoToken.FALSE);
+        primeroSTATEMENT.add(TipoToken.NULL);
+        primeroSTATEMENT.add(TipoToken.NUMBER);
+        primeroSTATEMENT.add(TipoToken.STRING);
+        primeroSTATEMENT.add(TipoToken.IDENTIFIER);
+        primeroSTATEMENT.add(TipoToken.LEFT_PAREN);
+        primeroSTATEMENT.add(TipoToken.FOR);
+        primeroSTATEMENT.add(TipoToken.IF);
+        primeroSTATEMENT.add(TipoToken.PRINT);
+        primeroSTATEMENT.add(TipoToken.RETURN);
+        primeroSTATEMENT.add(TipoToken.WHILE);
+        primeroSTATEMENT.add(TipoToken.LEFT_BRACE);
     }
 
     @Override
@@ -66,7 +85,7 @@ public class ASDR implements Parser{
             DECLARATION();
         }
         // DECLARATION -> STATEMENT DECLARATION
-        else if (preanalisis.tipo == TipoToken.EQUAL){
+        else if (primeroSTATEMENT.contains(preanalisis.tipo)){
             STATEMENT();
             DECLARATION();
         }
