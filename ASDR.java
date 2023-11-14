@@ -111,14 +111,11 @@ public class ASDR implements Parser{
          * distinto será un error.
          */
         
-        if(preanalisis.tipo == TipoToken.FUN){
-            match(TipoToken.FUN);
-            FUNCTION();
-        }
-        else{
-            hayErrores = true;
+        match(TipoToken.FUN);
+        if(hayErrores){
             System.out.println("Se esperaba una FUNCION");
         }
+        FUNCTION();
     }
 
     // VAR_DECL -> var id VAR_INIT ;
@@ -173,10 +170,6 @@ public class ASDR implements Parser{
 
         if(preanalisis.tipo == TipoToken.EQUAL){
             match(TipoToken.EQUAL);
-            if (hayErrores) {
-                System.out.println("Se esperaba '='");
-                return;
-            }
             EXPRESSION();
         }
 
@@ -207,8 +200,11 @@ public class ASDR implements Parser{
         if(hayErrores)
             return;
 
-        if(preanalisis.tipo == TipoToken.IDENTIFIER){
             match(TipoToken.IDENTIFIER);
+            if(hayErrores){
+                System.out.println("Se esperaba un IDENTIFICADOR");
+                return;
+            }
             match(TipoToken.LEFT_PAREN);
             if(hayErrores){
                 System.out.println("Se esperaba '(''");
@@ -221,11 +217,7 @@ public class ASDR implements Parser{
                 return;
             }
             BLOCK();
-        }
-        else{
-            hayErrores = true;
-            System.out.println("Se esperaba un IDENTIFICADOR");
-        }
+        
     }
 
     // PARAMETERS_OPC -> PARAMETERS | Ɛ
@@ -233,8 +225,7 @@ public class ASDR implements Parser{
         if(hayErrores)
             return;
 
-        if(preanalisis.tipo == TipoToken.IDENTIFIER)
-            PARAMETERS();
+        PARAMETERS();
     }
 
     // PARAMETERS -> id PARAMETERS_2
@@ -242,14 +233,12 @@ public class ASDR implements Parser{
         if(hayErrores)
             return;
 
-        if(preanalisis.tipo == TipoToken.IDENTIFIER){
-            match(TipoToken.IDENTIFIER);
-            PARAMETERS_2();
-        }
-        else{
-            hayErrores = true;
+        match(TipoToken.IDENTIFIER);
+        if(hayErrores){
             System.out.println("Se esperaba un IDENTIFICADOR");
+            return;
         }
+        PARAMETERS_2();
     }
 
     //PARAMETERS_2 -> , id PARAMETERS_2 | Ɛ
