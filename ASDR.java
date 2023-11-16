@@ -200,6 +200,7 @@ public class ASDR implements Parser{
         if(hayErrores)
             return;
 
+        if(preanalisis.tipo == TipoToken.IDENTIFIER){
             match(TipoToken.IDENTIFIER);
             if(hayErrores){
                 System.out.println("Se esperaba un IDENTIFICADOR");
@@ -217,7 +218,7 @@ public class ASDR implements Parser{
                 return;
             }
             BLOCK();
-        
+        }
     }
 
     // PARAMETERS_OPC -> PARAMETERS | Ɛ
